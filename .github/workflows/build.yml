@@ -17,8 +17,7 @@ jobs:
         with:
           node-version: '12'
       - run: yarn
-      - run: yarn build
-      - run: yarn start
+      - run: yarn dev
         env:
           PASSWORD: ${{secrets.PASSWORD}}
           USERNAME: ${{secrets.USERNAME}}

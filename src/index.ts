@@ -10,6 +10,7 @@ const main = async () => {
     username: process.env.USERNAME || "",
     password: process.env.PASSWORD || "",
   };
+  console.log(loginModel)
   if (loginModel.username === "" || loginModel.password === "") {
     process.exit(1);
   }

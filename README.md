@@ -1,6 +1,9 @@
 # auto-sign-in
 成都大学isp系统自动签到系统（疫情期间）
 
+## 使用之前
+如果你没有github账号，则需要在你使用之前注册（Sign up）一个github账号
+
 ## 使用方法
 1. fork本仓库
 

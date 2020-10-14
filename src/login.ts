@@ -31,8 +31,6 @@ export const login = async (url: string, credit: CreditModel, loginModel: LoginM
   };
   const res = await fetch(url, { method: "POST", body: form, headers });
   const text = await res.text();
-  logger.info(loginModel.username)
-  logger.info(loginModel.password)
   if (text.includes("学号或密码错误")) {
     logger.error("学号或密码错误");
     process.exit(1);
@@ -62,5 +60,6 @@ export const sign_in = async (cookie: string) => {
   } else {
     // TODO
     logger.error("未知错误");
+    logger.error(text)
   }
 };

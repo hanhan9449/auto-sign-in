@@ -2,7 +2,7 @@ import { LoginModel } from "./model/login.model";
 import * as dotenv from "dotenv";
 import { CreditModel } from "./model/credit.model";
 import { getCredit, login, sign_in } from "./login";
-import { urls } from "./constants";
+import { getUrls } from "./constants";
 import * as loggerUtil from "./logger.util";
 import fetch from 'node-fetch'
 
@@ -16,6 +16,7 @@ const main = async () => {
   if (loginModel.username === "" || loginModel.password === "") {
     process.exit(1);
   }
+  const urls = await getUrls();
   for (const url of urls) {
     const magic = "/weblogin.asp";
     const canUse = (await fetch(url + magic)).ok

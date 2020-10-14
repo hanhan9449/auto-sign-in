@@ -38,7 +38,10 @@ export const login = async (url: string, credit: CreditModel, loginModel: LoginM
 };
 
 // TODO: use url
-export const sign_in = async (cookie: string) => {
+export const sign_in = async (cookie: string, time: number) => {
+  if (time < 0) {
+    process.exit(1)
+  }
   dayjs().format();
   dayjs.locale("zh-cn");
   const nowDate = dayjs();
@@ -61,5 +64,6 @@ export const sign_in = async (cookie: string) => {
     // TODO
     logger.error("未知错误");
     logger.error(text)
+    await sign_in(cookie, time - 1)
   }
 };

@@ -17,7 +17,8 @@ const main = async () => {
   }
   const credit: CreditModel = await getCredit(urls[0]);
   await login(urls[0], credit, loginModel);
-  await sign_in(credit.cookie);
+  // TODO: 自动重试3次，考虑用rxjs重新实现？
+  await sign_in(credit.cookie, 3);
 };
 
 main().catch((err) => console.error(err));

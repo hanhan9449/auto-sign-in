@@ -14,12 +14,18 @@ const main = async () => {
     password: process.env.PASSWORD || "",
   };
   if (loginModel.username === "" || loginModel.password === "") {
+    logger.error('你的github secrets中USERNAME或PASSWORD为空')
     process.exit(1);
   }
   const urls = await getUrls();
+  // TODO: 对错误进行处理
+  const canIUse = async (url: string) => {
+    return (await fetch(url)).ok
+
+  }
   for (const url of urls) {
-    const magic = "/weblogin.asp";
-    const canUse = (await fetch(url + magic)).ok
+    const entrypoint = url + "/weblogin.asp";
+    const canUse = await canIUse( entrypoint)
     logger.info(JSON.stringify({url , canUse}))
     if (!canUse) {
       continue;
@@ -32,4 +38,4 @@ const main = async () => {
   }
 };
 
-main().catch((err) => console.error(err));
+main().catch((err) => logger.error(err));

@@ -7,10 +7,10 @@ import { logger } from "./index";
 
 // 获取验证码和cookie
 export const getCredit = async (url: string) => {
-  const magic = '/weblogin.asp'
-  const res = await fetch(url+ magic);
+  const magic = "/weblogin.asp";
+  const res = await fetch(url + magic);
   const text = await res.text();
-  const code = (text.match(/(?<=&nbsp;&nbsp;)\d{4}/) as any)[0];
+  const code = text.match(/(?<=&nbsp;&nbsp;)\d{4}/)![0];
   const cookie = res.headers.raw()["set-cookie"][0];
   logger.debug({ code, cookie });
   return { code, cookie } as CreditModel;
@@ -30,9 +30,10 @@ export const login = async (url: string, credit: CreditModel, loginModel: LoginM
   let headers = {
     cookie: credit.cookie,
   };
-  const magic = '/weblogin.asp'
-  const res = await fetch(url + magic, { method: "POST", body: form, headers });
+  const entrypoint = url + "/weblogin.asp";
+  const res = await fetch(entrypoint, { method: "POST", body: form, headers });
   const text = await res.text();
+  logger.debug("服务器注册cookie", { text });
   if (text.includes("学号或密码错误")) {
     logger.error("学号或密码错误");
     process.exit(1);
@@ -41,7 +42,8 @@ export const login = async (url: string, credit: CreditModel, loginModel: LoginM
 
 export const sign_in = async (url: string, cookie: string, time: number) => {
   if (time < 0) {
-    process.exit(1)
+    logger.error("登录超时，不再尝试该服务器", { url });
+    process.exit(1);
   }
   dayjs().format();
   dayjs.locale("zh-cn");
@@ -57,18 +59,19 @@ export const sign_in = async (url: string, cookie: string, time: number) => {
   };
   const res = await fetch(magic, { headers });
   const text = await res.text();
+  logger.debug("自动登录服务", { text });
 
   if (text.includes("登记已存在")) {
     logger.warn("登记已存在");
-    return true
+    return true;
   } else if (text.includes("成功")) {
     logger.info("登记成功");
-    return true
+    return true;
   } else {
     // TODO: 将错误具体举出来
     logger.error("未知错误");
-    logger.error(text)
-    await sign_in(url, cookie, time - 1)
+    logger.error(text);
+    await sign_in(url, cookie, time - 1);
   }
-  return false
+  return false;
 };

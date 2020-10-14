@@ -7,7 +7,8 @@ import { logger } from "./index";
 
 // 获取验证码和cookie
 export const getCredit = async (url: string) => {
-  const res = await fetch(url);
+  const magic = '/weblogin.asp'
+  const res = await fetch(url+ magic);
   const text = await res.text();
   const code = (text.match(/(?<=&nbsp;&nbsp;)\d{4}/) as any)[0];
   const cookie = res.headers.raw()["set-cookie"][0];
@@ -29,7 +30,8 @@ export const login = async (url: string, credit: CreditModel, loginModel: LoginM
   let headers = {
     cookie: credit.cookie,
   };
-  const res = await fetch(url, { method: "POST", body: form, headers });
+  const magic = '/weblogin.asp'
+  const res = await fetch(url + magic, { method: "POST", body: form, headers });
   const text = await res.text();
   if (text.includes("学号或密码错误")) {
     logger.error("学号或密码错误");
@@ -37,8 +39,7 @@ export const login = async (url: string, credit: CreditModel, loginModel: LoginM
   }
 };
 
-// TODO: use url
-export const sign_in = async (cookie: string, time: number) => {
+export const sign_in = async (url: string, cookie: string, time: number) => {
   if (time < 0) {
     process.exit(1)
   }
@@ -48,7 +49,8 @@ export const sign_in = async (cookie: string, time: number) => {
   nowDate.day();
 
   const magic =
-    "https://xsswzx.cdu.edu.cn/ispstu1-2/com_user/project_addx.asp?id=2cac2bcd340407662b58f58d7d36208484167d55095a&id2=" +
+    url +
+    "/project_addx.asp?id=2cac2bcd340407662b58f58d7d36208484167d55095a&id2=" +
     +encodeURI(`${nowDate.year()}年${nowDate.month()}月${nowDate.day()}日`);
   const headers = {
     cookie,
@@ -58,12 +60,15 @@ export const sign_in = async (cookie: string, time: number) => {
 
   if (text.includes("登记已存在")) {
     logger.warn("登记已存在");
+    return true
   } else if (text.includes("成功")) {
     logger.info("登记成功");
+    return true
   } else {
-    // TODO
+    // TODO: 将错误具体举出来
     logger.error("未知错误");
     logger.error(text)
-    await sign_in(cookie, time - 1)
+    await sign_in(url, cookie, time - 1)
   }
+  return false
 };

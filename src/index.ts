@@ -16,8 +16,8 @@ const main = async () => {
     process.exit(1);
   }
   const credit: CreditModel = await getCredit(urls[0]);
-  login(urls[0], credit, loginModel);
-  sign_in(credit.cookie);
+  await login(urls[0], credit, loginModel);
+  await sign_in(credit.cookie);
 };
 
 main().catch((err) => console.error(err));

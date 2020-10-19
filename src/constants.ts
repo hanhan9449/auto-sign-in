@@ -9,7 +9,7 @@ export const urls: string[] = [
   "https://xsswzx.cdu.edu.cn/ispstu2-2/com_user",
 ];
 
-export const getUrls = async () => {
+export const getUrls: () => Promise<string[]> = async () => {
   const magic = "https://xsswzx.cdu.edu.cn/isp/website.asp";
   const res = await fetch(magic);
   const text = await res.text();

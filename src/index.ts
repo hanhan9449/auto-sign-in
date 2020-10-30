@@ -19,7 +19,6 @@ const main = async () => {
   }
   const urls = await getUrls();
   logger.debug(urls)
-  // TODO: 对错误进行处理
   const canIUse = async (url: string) => {
     const result = await Promise.race([
       fetch(url),
@@ -27,7 +26,6 @@ const main = async () => {
         setTimeout(() => reject(new Error("request timeout")), 3000);
       }),
     ]);
-    // TODO: 设置超时检测
     return (result as fetch.Response).ok;
   };
   for (const url of urls) {

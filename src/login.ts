@@ -50,6 +50,7 @@ export const sign_in = async (url: string, cookie: string, time: number) => {
   const nowDate = dayjs();
   nowDate.day();
 
+  // 签到url
   const magic =
     url +
     "/project_addx.asp?id=2cac2bcd340407662b58f58d7d36208484167d55095a&id2=" +

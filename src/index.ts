@@ -21,18 +21,20 @@ async function main() {
   const loginModel = getLoginModel();
   const urls = await getUrls();
   for (const url of urls) {
-    logger.info(`正在尝试使用'${url}'`)
-    try {
-      const canUse = await testUrl(url);
-    } catch (e) {
-      logger.error(e);
-      continue;
-    }
-    const credit: CreditModel = await getCredit(url);
-    await registerToken(url, credit, loginModel);
-    try {
+    logger.info(`正在尝试使用'${url}'`);
+    let timer = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject(new Error("超时"));
+      }, 10000);
+    });
+    let tasks = new Promise(async (resolve, reject) => {
+      let credit = await getCredit(url);
+      await registerToken(url, credit, loginModel);
       await signIn(url, credit.cookie);
       process.exit(0);
+    });
+    try {
+      await Promise.race([timer, tasks]);
     } catch (e) {}
   }
 }

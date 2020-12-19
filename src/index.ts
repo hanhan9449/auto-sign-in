@@ -25,7 +25,7 @@ async function main() {
     let timer = new Promise((resolve, reject) => {
       setTimeout(() => {
         reject(new Error("超时"));
-      }, 10000);
+      }, 15000);
     });
     let tasks = new Promise(async (resolve, reject) => {
       let credit = await getCredit(url);

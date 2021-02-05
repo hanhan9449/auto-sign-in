@@ -24,7 +24,7 @@ async function main() {
     logger.info(`正在尝试使用'${url}'`);
     let timer = new Promise((resolve, reject) => {
       setTimeout(() => {
-        reject(new Error("超时"));
+        reject(new Error("使用当前链接超时"));
       }, 15000);
     });
     let tasks = new Promise(async (resolve, reject) => {
@@ -41,6 +41,7 @@ async function main() {
       await Promise.race([timer, tasks]);
     } catch (e) {}
   }
+  throw new Error("已经尝试所有链接，均失败");
 }
 
 main().catch((err) => {

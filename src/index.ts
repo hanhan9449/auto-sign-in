@@ -28,9 +28,13 @@ async function main() {
       }, 15000);
     });
     let tasks = new Promise(async (resolve, reject) => {
-      let credit = await getCredit(url);
-      await registerToken(url, credit, loginModel);
-      await signIn(url, credit.cookie);
+      try {
+        let credit = await getCredit(url);
+        await registerToken(url, credit, loginModel);
+        await signIn(url, credit.cookie);
+      } catch (e) {
+        return;
+      }
       process.exit(0);
     });
     try {

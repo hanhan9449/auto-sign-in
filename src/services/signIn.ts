@@ -27,6 +27,6 @@ export async function signIn(url: string, cookie: string) {
   } else {
     logger.error("未知错误");
     logger.error(text);
+    return false
   }
-  return false;
 }

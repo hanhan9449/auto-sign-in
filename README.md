@@ -13,3 +13,5 @@
     ![settings](./assets/Snipaste_2020-10-14_14-31-44.png)
     ![secrets](./assets/Snipaste_2020-10-14_14-32-47.png)
 3. 默认设置为早上七点签到，所以晚上设置了就等明天才能看见效果
+
+test

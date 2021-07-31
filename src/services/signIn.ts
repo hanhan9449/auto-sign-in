@@ -12,6 +12,8 @@ export async function signIn(url: string, cookie: string) {
 
   url += magic;
   url += encodeURI(`${nowDate.year()}年${nowDate.month()}月${nowDate.day()}日`);
+  url += '&adds='+encodeURI('四川省成都市武侯区桂溪街道成达佳园')
+  url += '&addsxy=104.07859,30.55403'
   const headers = {
     cookie,
   };
